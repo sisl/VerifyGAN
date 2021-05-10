@@ -16,7 +16,7 @@ y_train = h5read("SK_DownsampledGANFocusAreaData.h5", "y_train") # 16 x 8 x 1000
 ```
 
 ## models
-The control network that takes in a downsampled runway image and predicts crosstrack error and heading error is saved in both the [NNet](https://github.com/sisl/NNet) (`KJ_TaxiNet.nnet`) and [Flux](https://fluxml.ai/) (`taxinet.bson`) format.
+The control network that takes in a downsampled runway image and predicts crosstrack error and heading error is saved in both the [NNet](https://github.com/sisl/NNet) (`TinyTaxiNet.nnet`) and [Flux](https://fluxml.ai/) (`TinyTaxiNet.bson`) format.
 
 The full models (concatenated generator and control network) for both the supervised and adversarial MLPs are located here as well in both formats. These networks go from two latent variables and the normalized crosstrack and heading error to a prediction of the crosstrack and heading error.
 
