@@ -1,6 +1,3 @@
-# Flux implementation of spectral normalization
-# Written by A. Corso
-
 using Flux, Random, Parameters, Zygote, LinearAlgebra
 
 # Power iteration algorithm for computing the spectral norm
@@ -17,6 +14,7 @@ end
 
 # Compute the maximum singular value
 msv(u, v, W) = u' * W * v
+
 
 ## Dense Layer with Spectral Normalization
 struct DenseSN{F,S<:AbstractArray,T<:AbstractArray, I<:Int, VV<:AbstractArray}
@@ -59,7 +57,8 @@ function outdims(l::DenseSN, isize)
     return (size(l.W, 1),)
 end
 
-## Convolutional layer with Spectral Normalization
+
+## Convluational layer with Spectral Normalization
 struct ConvSN{N,M,F,A,V, I<:Int, VV<:AbstractArray}
   σ::F
   weight::A

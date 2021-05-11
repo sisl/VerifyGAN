@@ -24,13 +24,13 @@ The full models (concatenated generator and control network) for both the superv
 The python files to interface with the XPlane simulator are contained in the `src/xplane_interface` folder. More information about the `xpc3.py` file created by NASA X-Plane Connect can be found [here](https://github.com/nasa/XPlaneConnect). Other notable files include `genGANData.py` and `SK_genTrainingData.py`, which are used to generate and downsample the GAN training data respectively. The `sim_network.py` file allows us to simulate our simple dynamics model using X-Plane 11 images to drive the controller.
 
 ## gan training
-The code for training the GANs as well as some of the saved generators can be found in `src/gan_training`. The file `cGAN_common.jl` contains functions for training a conditional GAN, the file `spectral_norm.jl` implements spectral normalization layers in Flux to be used by the discriminator, and the file `taxi_models_and_data` implements functions specific to the taxinet problem and is the main file to call for training the GAN. The `train_smaller_generator` file contains the code to train a smaller generator in a superivised learning fashion.
+The code for training the GANs as well as some of the saved generators can be found in `src/gan_training`. The file `cGAN_common.jl` contains functions for training a conditional GAN, the file `spectral_norm.jl` implements spectral normalization layers in Flux to be used by the discriminator, and the file `taxi_models_and_data` implements the generator and discriminator architectures used for the taxinet problem. `train_gans.jl` runs the code for training a GAN with various hyperparameters. The `train_smaller_generator` file contains the code to train a smaller generator in a supervised learning fashion.
 
 To run the training code, ensure that all necessary julia packages are installed and then run:
 ```julia
-include("taxi_models_and_data.jl")
+include("train_gans.jl")
 ```
-This code was developed and tested using Julia1.5.
+This code was developed and tested using Julia 1.5.
 
 The settings data structures allows for easy specification on training settings:
 
@@ -41,10 +41,10 @@ The settings data structures allows for easy specification on training settings:
 	loss # Loss function
 	img_fun # Function to load in the image data
 	rand_input # Function to generate a random input for the generator
-	batch_size::Int = 128
+	batch_size::Int = 128 # Batch size of the data
 	latent_dim::Int = 100 # Number of latent variables
 	nclasses::Int = 2 # Number of input variables (crosstrack error and heading error)
-	epochs::Int = 120
+	epochs::Int = 120 # Numer of epochs through the data for training
 	verbose_freq::Int = 2000 # How often to print and save training info
 	output_x::Int = 6 # Size of image output examples
 	output_y::Int = 6 # Size of image output examples
@@ -56,7 +56,7 @@ end
 ```
 
 ## verification
-The verification code relies on a modified version of Ai2z, which is implemented in the `src/verification/Ai2zPQ.jl` file. The `verify.jl` file located in `src/verification` loads in the necessary files and containsfunctions for computing the minimum and maximum control output over a given region in the generator's input space and for doing so for each cell in an input space.
+The verification code relies on a modified version of Ai2z, which is implemented in the `src/verification/Ai2zPQ.jl` file. The `verify.jl` file located in `src/verification` loads in the necessary files and contains functions for computing the minimum and maximum control output over a given region in the generator's input space and for doing so for each cell in an input space.
 
 To divide up the input space and run verification, run the following lines of code:
 
